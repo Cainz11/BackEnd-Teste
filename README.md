@@ -25,6 +25,7 @@ dotnet run
 
 ```bash
 cd frontend
+cd pessoa-app
 npm install
 ng serve
 ```
