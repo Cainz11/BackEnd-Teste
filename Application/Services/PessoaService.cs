@@ -8,7 +8,6 @@ namespace Application.Services
     public class PessoaService : IPessoaService
     {
         private readonly IPessoaRepository _repository;
-        private const string DATE_FORMAT = "dd/MM/yyyy";
 
         public PessoaService(IPessoaRepository repository)
         {
@@ -23,7 +22,7 @@ namespace Application.Services
                 Id = p.Id,
                 Nome = p.Nome,
                 Endereco = p.Endereco,
-                DataNascimento = p.DataNascimento.ToString(DATE_FORMAT)
+                DataNascimento = p.DataNascimento
             });
         }
 
@@ -35,7 +34,7 @@ namespace Application.Services
                 Id = p.Id,
                 Nome = p.Nome,
                 Endereco = p.Endereco,
-                DataNascimento = p.DataNascimento.ToString(DATE_FORMAT)
+                DataNascimento = p.DataNascimento
             };
         }
 
@@ -45,11 +44,10 @@ namespace Application.Services
             {
                 Nome = dto.Nome,
                 Endereco = dto.Endereco,
-                DataNascimento = DateTime.ParseExact(dto.DataNascimento, DATE_FORMAT, null)
+                DataNascimento = dto.DataNascimento
             };
             var created = await _repository.AddAsync(pessoa);
             dto.Id = created.Id;
-            dto.DataNascimento = created.DataNascimento.ToString(DATE_FORMAT);
             return dto;
         }
 
@@ -60,7 +58,7 @@ namespace Application.Services
                 Id = id,
                 Nome = dto.Nome,
                 Endereco = dto.Endereco,
-                DataNascimento = DateTime.ParseExact(dto.DataNascimento, DATE_FORMAT, null)
+                DataNascimento = dto.DataNascimento
             };
             await _repository.UpdateAsync(pessoa);
         }

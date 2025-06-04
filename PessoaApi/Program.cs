@@ -1,3 +1,4 @@
+using System.Globalization;
 using Application.Services;
 using Domain.Interfaces;
 using Infrastructure.Data;
@@ -5,7 +6,12 @@ using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
+CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure URLs
+builder.WebHost.UseUrls("http://localhost:5000", "https://localhost:5001");
 
 // Add CORS
 builder.Services.AddCors(options =>
@@ -39,12 +45,23 @@ builder.Services.AddSwaggerGen(c =>
 
 var app = builder.Build();
 
+// Redirecionar a raiz para /swagger
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/swagger");
+        return;
+    }
+    await next();
+});
+
 // Configure Swagger
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "API de Pessoas v1");
-    c.RoutePrefix = string.Empty; // Isso fará o Swagger abrir na raiz
+    c.RoutePrefix = "swagger";
 });
 
 // Use CORS

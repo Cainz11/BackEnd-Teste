@@ -16,6 +16,6 @@ namespace Domain.Entities
         public string Endereco { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "A data de nascimento é obrigatória")]
-        public DateTime DataNascimento { get; set; }
+        public DateOnly DataNascimento { get; set; }
     }
 }

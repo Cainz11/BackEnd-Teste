@@ -1,0 +1,54 @@
+<div class="container">
+  <mat-toolbar color="primary">
+    <span>{{ id ? 'Editar' : 'Nova' }} Pessoa</span>
+    <span class="spacer"></span>
+    <button mat-icon-button (click)="voltar()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-card>
+    <mat-card-content>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nome</mat-label>
+          <input matInput formControlName="nome" placeholder="Digite o nome">
+          <mat-error *ngIf="form.get('nome')?.hasError('required')">
+            Nome é obrigatório
+          </mat-error>
+          <mat-error *ngIf="form.get('nome')?.hasError('maxlength')">
+            Nome deve ter no máximo 100 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Endereço</mat-label>
+          <input matInput formControlName="endereco" placeholder="Digite o endereço">
+          <mat-error *ngIf="form.get('endereco')?.hasError('required')">
+            Endereço é obrigatório
+          </mat-error>
+          <mat-error *ngIf="form.get('endereco')?.hasError('maxlength')">
+            Endereço deve ter no máximo 200 caracteres
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Data de Nascimento</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="dataNascimento" placeholder="Escolha a data" [max]="maxDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('dataNascimento')?.hasError('required')">
+            Data de nascimento é obrigatória
+          </mat-error>
+        </mat-form-field>
+
+        <div class="button-container">
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+            {{ id ? 'Atualizar' : 'Salvar' }}
+          </button>
+          <button mat-button type="button" (click)="voltar()">Cancelar</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
